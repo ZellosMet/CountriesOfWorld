@@ -1,81 +1,81 @@
-using Microsoft.EntityFrameworkCore;
+п»їusing Microsoft.EntityFrameworkCore;
 using CountriesOfWorld;
 
 var builder = WebApplication.CreateBuilder(args);
-//Добавляем сервис DBContext(должен быть перед сборкой)
+//Р”РѕР±Р°РІР»СЏРµРј СЃРµСЂРІРёСЃ DBContext(РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРµСЂРµРґ СЃР±РѕСЂРєРѕР№)
 builder.Services.AddDbContext<ApplicationDbContext>();
 var app = builder.Build();
 
 
-//Провера подключения
+//РџСЂРѕРІРµСЂР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ
 app.MapGet("/api", () => new { Message = "server is running" });
 app.MapGet("/api/ping", () => new { Message = "pong" });
 
-//Запрос на получения всех стран
+//Р—Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёСЏ РІСЃРµС… СЃС‚СЂР°РЅ
 app.MapGet("/api/country", async (ApplicationDbContext db) =>
 {
-    return await db.Сountries.ToListAsync();
+    return await db.РЎountries.ToListAsync();
 });
 
-//Запрос на получение страны по id
+//Р—Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ СЃС‚СЂР°РЅС‹ РїРѕ id
 app.MapGet("/api/country/{id:int}", async (int id, ApplicationDbContext db) =>
 {
-    return await db.Сountries.FirstOrDefaultAsync(c => c.Id == id);
+    return await db.РЎountries.FirstOrDefaultAsync(c => c.Id == id);
 });
 
-//Запрос на получение страны по коду
+//Р—Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ СЃС‚СЂР°РЅС‹ РїРѕ РєРѕРґСѓ
 app.MapGet("/api/country/{code}", async (string code, ApplicationDbContext db) =>
 {
-    return await db.Сountries.FirstOrDefaultAsync(d => d.Alpha2Code == code);
+    return await db.РЎountries.FirstOrDefaultAsync(d => d.Alpha2Code == code);
 });
 
-//Добавление страны
-app.MapPost("/api/country/list", async (List<Сountry> list, ApplicationDbContext db) =>
+//Р”РѕР±Р°РІР»РµРЅРёРµ СЃС‚СЂР°РЅС‹
+app.MapPost("/api/country/list", async (List<РЎountry> list, ApplicationDbContext db) =>
 {
-    await db.Сountries.AddRangeAsync(list);
+    await db.РЎountries.AddRangeAsync(list);
     await db.SaveChangesAsync();
     return list;
 });
 
-//Добавление списка стран/////////
-app.MapPost("/api/country", async (Сountry country, ApplicationDbContext db) =>
+//Р”РѕР±Р°РІР»РµРЅРёРµ СЃРїРёСЃРєР° СЃС‚СЂР°РЅ/////////
+app.MapPost("/api/country", async (РЎountry country, ApplicationDbContext db) =>
 {
-    await db.Сountries.AddAsync(country);
+    await db.РЎountries.AddAsync(country);
     await db.SaveChangesAsync();
     return country;
 });
 
-//Редактирование данных//////////
-app.MapPut("/api/country/{id:int}", async (int id, Сountry country, ApplicationDbContext db) =>
+//Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С…//////////
+app.MapPut("/api/country/{id:int}", async (int id, РЎountry country, ApplicationDbContext db) =>
 {
-    Сountry? update = await db.Сountries.FirstOrDefaultAsync(c => c.Id == id);
+    РЎountry? update = await db.РЎountries.FirstOrDefaultAsync(c => c.Id == id);
     if (update != null)
     {
         update.FullName = country.FullName;
         update.ShortName = country.ShortName;
         update.Alpha2Code = country.Alpha2Code;
-        db.Сountries.Update(update);
+        db.РЎountries.Update(update);
         await db.SaveChangesAsync();
     }
     return update;
 });
 
-//Удаление страны
+//РЈРґР°Р»РµРЅРёРµ СЃС‚СЂР°РЅС‹
 app.MapDelete("/api/country/{id:int}", async (int id, ApplicationDbContext db) =>
 {
-    Сountry? deleted = await db.Сountries.FirstOrDefaultAsync(c => c.Id == id);
+    РЎountry? deleted = await db.РЎountries.FirstOrDefaultAsync(c => c.Id == id);
     if (deleted != null)
     {
-        db.Сountries.Remove(deleted);
+        db.РЎountries.Remove(deleted);
         await db.SaveChangesAsync();
     }
 });
 
-//Удаление всех стран//////////
+//РЈРґР°Р»РµРЅРёРµ РІСЃРµС… СЃС‚СЂР°РЅ//////////
 app.MapDelete("/api/country/alldelete", async (ApplicationDbContext db) =>
 {
-    List<Сountry> all_country = await db.Сountries.ToListAsync();
-    db.Сountries.RemoveRange(all_country);
+    List<РЎountry> all_country = await db.РЎountries.ToListAsync();
+    db.РЎountries.RemoveRange(all_country);
     await db.SaveChangesAsync();    
 });
 
