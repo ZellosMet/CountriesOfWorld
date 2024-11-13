@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountriesOfWorld", "CountriesOfWorld\CountriesOfWorld.csproj", "{E8D5522F-C01E-4837-B4C0-745B0F62D4E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "appsettings.json", "CountriesOfWorld\appsettings.json.csproj", "{E8D5522F-C01E-4837-B4C0-745B0F62D4E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
