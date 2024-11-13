@@ -30,19 +30,19 @@ app.MapGet("/api/country/{code}", async (string code, ApplicationDbContext db) =
 });
 
 //Добавление страны
-app.MapPost("/api/country/list", async (List<Сountry> list, ApplicationDbContext db) =>
-{
-    await db.Сountries.AddRangeAsync(list);
-    await db.SaveChangesAsync();
-    return list;
-});
-
-//Добавление списка стран/////////
 app.MapPost("/api/country", async (Сountry country, ApplicationDbContext db) =>
 {
     await db.Сountries.AddAsync(country);
     await db.SaveChangesAsync();
     return country;
+});
+
+//Добавление списка стран/////
+app.MapPost("/api/country/list", async (List<Сountry> list, ApplicationDbContext db) =>
+{
+    await db.Сountries.AddRangeAsync(list);
+    await db.SaveChangesAsync();
+    return list;
 });
 
 //Редактирование данных//////////
@@ -68,7 +68,9 @@ app.MapDelete("/api/country/{id:int}", async (int id, ApplicationDbContext db) =
     {
         db.Сountries.Remove(deleted);
         await db.SaveChangesAsync();
+        return $"Страна с ID {deleted.Id} удалена";
     }
+    return $"Страна с ID {id} не найдена";
 });
 
 //Удаление всех стран//////////
@@ -76,7 +78,8 @@ app.MapDelete("/api/country/alldelete", async (ApplicationDbContext db) =>
 {
     List<Сountry> all_country = await db.Сountries.ToListAsync();
     db.Сountries.RemoveRange(all_country);
-    await db.SaveChangesAsync();    
+    await db.SaveChangesAsync();
+    return $"Все страны удалены";
 });
 
 app.Run();
